@@ -21,7 +21,12 @@ function showSuccess(input) {
 function isEmailValid(enteredEmail) {
     //const re = /^[\w-]+(\.[\w-]+)*@([a-z0-9-]+(\.[a-z0-9-]+)*?\.[a-z]{2,6}|(\d{1,3}\.){3}\d{1,3})(:\d{4})?$/;
     const re = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
-    return re.test(enteredEmail);
+    //return re.test(enteredEmail);
+    if (re.test(enteredEmail.value)) {
+        showSuccess(enteredEmail);
+    } else {
+        showError(enteredEmail, "Email is not valid");
+    }
 }
 
 //Check required fileds
@@ -34,6 +39,17 @@ function checkRequired(inputArr) {
         }
         //console.log(input.value);
     });
+}
+
+// Check input length
+function checkLength(input, min, max) {
+    if (input.value.length < min) {
+        showError(input, `${input.id.slice(0,1).toUpperCase() + input.id.slice(1)} must be at least ${min} characters`);
+    } else if (input.value.length > max) {
+        showError(input, `${input.id.slice(0,1).toUpperCase() + input.id.slice(1)} must be less than ${max} characters`);
+    } else {
+        showSuccess(input);
+    }
 }
 
 //Get field name
@@ -71,4 +87,7 @@ form.addEventListener("submit", function(evt) {
     } else {
         showSuccess(password2);
     } */
+    checkLength(username, 3, 15);
+    checkLength(password, 6, 25);
+    isEmailValid(email);
 });
